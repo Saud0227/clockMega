@@ -2,6 +2,7 @@
 #include "U8glib.h"
 #include <Wire.h>
 #include <RtcDS3231.h>
+#include <Adafruit_NeoPixel.h>
 
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -10,6 +11,12 @@
 #define SERVO_PIN 9
 #define ANALOG_READ_PIN 14
 #define OVERRIDE_SNAP 8
+
+const byte neoPin = 7;
+const byte neoPixels = 24;
+byte neoBright = 100;
+
+Adafruit_NeoPixel ring = Adafruit_NeoPixel(neoPixels, neoPin, NEO_GRB);
 
 
 U8GLIB_SSD1306_128X64 oled(U8G_I2C_OPT_NONE);
@@ -27,6 +34,7 @@ byte tH;
 byte tM;
 byte tS;
 
+int loopC = 0;
 
 
 void setup(){
@@ -39,6 +47,10 @@ void setup(){
     rtcModule.Begin();
     RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
     rtcModule.SetDateTime(compiled);
+
+	ring.begin();
+	ring.setBrightness(neoBright); 
+	ring.show();
 }
 
 
@@ -85,7 +97,17 @@ void loop(){
     float rtcTemp = rtcUpdate();
 
     screenWrite(rtcTemp);
-    delay(10);
+	if(int(loopC/24) == 0){
+		ring.setPixelColor(loopC, ring.Color(0,118,189));
+    	ring.show();
+	}else if (int(loopC/24) == 1){
+		ring.setPixelColor(loopC-24, ring.Color(0,0,0));
+    	ring.show();
+	}else{
+		loopC = -1;
+	}
+	loopC +=1;
+    delay(5);
 
 }
 
