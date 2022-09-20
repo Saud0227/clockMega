@@ -1,0 +1,6 @@
+{
+    "sketch": "clockMega.ino",
+    "board": "arduino:avr:uno",
+    "port": "COM6",
+    "output": "../build"
+}
