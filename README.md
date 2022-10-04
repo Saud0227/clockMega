@@ -1,5 +1,5 @@
 # clockMega
-Tillämpad programmering åk2 
+Tillämpad programmering åk2
 ## Detaljer
 Krav:
  - OLED skärm med tid
